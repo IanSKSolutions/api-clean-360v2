@@ -1,9 +1,10 @@
-from flask import request
+from flask import request, send_file
 from flask_restful import Resource
 import pandas as pd
 import io
 from controller.clean import clean
 import traceback
+import os
 
 class CleanCSVEndpoint(Resource):
     def post(self):
@@ -19,8 +20,11 @@ class CleanCSVEndpoint(Resource):
         
         try:
             clean(io.StringIO(file.stream.read().decode('utf-8')))
+            fileOutputName = os.getenv("FILE_OUTPUT_NAME")
 
-            return 204
+            return send_file(fileOutputName, mimetype='text/csv',
+                         as_attachment=True,
+                         download_name='archivo.csv')
         
         except Exception as e:
             print(e)

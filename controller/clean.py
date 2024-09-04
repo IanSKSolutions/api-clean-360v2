@@ -80,7 +80,7 @@ mapa_de_estados = {
 # Función para buscar el valor correspondiente
 def buscar_estado(entrada):
     # Convertir la entrada a minúsculas
-    z
+    
     entrada = entrada.lower()
 
     # Buscar el valor correspondiente en el diccionario
