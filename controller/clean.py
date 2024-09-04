@@ -68,6 +68,29 @@ HEADERS_OUTPUT = [
     'Celular'
 ]
 
+mapa_de_estados = {
+    "asignado al operador": "assigned to operator",
+    "en un poc": "in poc",
+    "en un poc con cambio de selección": "in poc with selection change",
+    "a ser retirada": "to be removed",
+    "a ser reemplazada": "to be replaced",
+    "en instalación": "under installation"
+}
+
+# Función para buscar el valor correspondiente
+def buscar_estado(entrada):
+    # Convertir la entrada a minúsculas
+    z
+    entrada = entrada.lower()
+
+    # Buscar el valor correspondiente en el diccionario
+    valor = mapa_de_estados.get(entrada)
+
+    if valor:
+        return valor
+    else:
+        return "Missing"
+
 def correctRegion(actualRow, prevRow, postRow, newRowData):
     
     if actualRow[HEADERS_COLUMNS['operatorName']] == postRow[HEADERS_COLUMNS['operatorName']]:
@@ -250,7 +273,7 @@ def procesaFila(actualRow, prevRow, postRow):
     else:
         newRowData[6] = actualRow[HEADERS_COLUMNS['invoiceNumber']]
 
-    newRowData[7] = 'In POC' if actualRow[HEADERS_COLUMNS['stateMachine']] == 'Missing' else actualRow[HEADERS_COLUMNS['stateMachine']]
+    newRowData[7] = buscar_estado(actualRow[HEADERS_COLUMNS['stateMachine']])
 
     newRowData = correctPocGroups(actualRow=actualRow, prevRow=prevRow, postRow=postRow, newRowData=newRowData)
     newRowData = correctPocNameResponsable(actualRow=actualRow, prevRow=prevRow, postRow=postRow, newRowData=newRowData)
