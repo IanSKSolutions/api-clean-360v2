@@ -1,0 +1,9 @@
+flask
+flask_restful
+python_dotenv
+pyjwt
+marshmallow
+StringGenerator
+flask_cors
+waitress
+pandas
