@@ -7,3 +7,5 @@ StringGenerator
 flask_cors
 waitress
 pandas
+psycopg2
+sqlalchemy

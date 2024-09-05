@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import request, send_file
 from flask_restful import Resource
 import pandas as pd
@@ -5,6 +6,8 @@ import io
 from controller.clean import clean
 import traceback
 import os
+from dao.sql.sql_routes_details_dao import SQLRoutesDetailsDAO
+from controller.update_locations import update_locations
 
 class CleanCSVEndpoint(Resource):
     def post(self):
@@ -22,6 +25,15 @@ class CleanCSVEndpoint(Resource):
             clean(io.StringIO(file.stream.read().decode('utf-8')))
             fileOutputName = os.getenv("FILE_OUTPUT_NAME")
 
+            routes_details_dao = SQLRoutesDetailsDAO()
+            df_file_clean = pd.read_csv(fileOutputName, encoding='utf-8')
+            ahora = datetime.now()
+
+            # Extraer el mes y el año
+            mes = ahora.month  # Nombre completo del mes
+            anio = ahora.year
+            df_routeDetails = routes_details_dao.list(mes-1,anio)
+            update_locations(df_routeDetails,df_file_clean)
             return send_file(fileOutputName, mimetype='text/csv',
                          as_attachment=True,
                          download_name='archivo.csv')

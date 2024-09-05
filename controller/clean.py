@@ -340,8 +340,12 @@ def clean(file):
         prevRow = None
         postRow = None
         actualRow = None
+
+        df_nuevo = pd.DataFrame(columns=HEADERS_OUTPUT)
+
+        df_nuevo.to_csv(fileOutputName, index=False)
        
-        for i, chunk in enumerate(pd.read_csv(file, chunksize=chunkSize, skiprows=0, encoding="utf-8")):
+        for i, chunk in enumerate(pd.read_csv(file, chunksize=chunkSize, encoding="utf-8")):
             data = []
             for row_index, row in enumerate(chunk.itertuples(index=False)):
                 
@@ -362,6 +366,7 @@ def clean(file):
             df_output = pd.DataFrame(data)
             df_output.to_csv(fileOutputName, index=False, mode='a', encoding="utf-8", header=False,)
             ##Save info in CSV
+        
         print("Proceso terminado")
     except FileNotFoundError:
         print('No se encontró el archivo.')
